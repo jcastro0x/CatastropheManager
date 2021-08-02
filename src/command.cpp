@@ -1,5 +1,5 @@
 #include "command.h"
-#include <exception>
+#include <stdexcept>
 
 Command::Command(const std::string& name, std::function<void()> callback)
 : Command({name}, "", callback)
@@ -9,8 +9,8 @@ Command::Command(const std::string& name, std::function<void()> callback)
 Command::Command(const std::vector<std::string>& names, const std::string& description, std::function<void()> callback)
 : m_names(names), m_description(description), m_callback(callback)
 {
-    if(m_names.size() == 0) throw std::exception("Command with 0 names");
-    if(m_callback == false) throw std::exception("Command without bind command");
+    if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
+    if(!m_callback)         throw std::runtime_error("Command without bind command");
 }
 
 bool Command::execute(const std::string& input) const

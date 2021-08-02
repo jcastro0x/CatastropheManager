@@ -7,17 +7,18 @@
 Interpreter::Interpreter(const std::vector<Command>& commands)
 : m_commands(commands)
 {
-    std::vector<Command> commands = {
+    std::vector<Command> innerCommands = {
 
         Command("q", [](){
             std::cout << "Close program\n";
             std::exit(0);
         }),
-        Command("h", [&](){
+        Command("h", [this](){
             printCommands();
         })
     };
 
+    m_commands.insert(m_commands.begin(), innerCommands.begin(), innerCommands.end());
 }
 
 void Interpreter::run()

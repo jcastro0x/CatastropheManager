@@ -4,9 +4,11 @@
 # We'll save in th(is folder the programs
 mkdir build
 
+#BOOST_LIBS = -lboost_date_time -lboost_program_options -lrt
+
 # Build Generator
 echo "(1/2) Building Generator..."
-g++ src/generator.cpp src/interpreter.cpp src/command.cpp include/common.cpp -Iinclude -lboost_date_time -lrt -o generator
+g++ src/generator.cpp src/interpreter.cpp src/command.cpp include/common.cpp -Iinclude -lboost_date_time -lboost_program_options -lrt -o generator
 mv generator build/generator
 
 # Build Solver

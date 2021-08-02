@@ -1,9 +1,20 @@
 # Catastrophe Manager
+![screenshot](catastrophe.jpg)
 
 ## Summary
-This if my first attemp to learn how shared memory works within O.S, primary focused to Linux systems (and checked in Arch Linux distro)
+This if my first attemp to learn how **shared memory** works within O.S, primary focused to Linux systems (and checked in Arch Linux distro)
 
-The main idea behind this is to aim mi progress into SICE, a partner company of CAPITOLE CONSULTING, since I'm gonna work there the next month.
+> The main idea behind this is to aim mi progress into _SICE_, a partner company of _CAPITOLE CONSULTING_, since I'm gonna work there the next month.
+
+## Layout
+### Interpreter
+The `interpreter` class uses a vector of `command` instances to check what action will execute. Both `generator` and `solver` uses it.
+
+### Common
+The `common` class works as DRY principle to both `generator` and `solver`. 
+It's the class that holds all active catastrophes, and the functions to create and delete them.
+Also  it's the responsable to create the **shared memory** object through boost library.
+
 
 ## How works
 Composed by two different programs:
@@ -15,13 +26,17 @@ The first, generates differente catastrophes into a shared memory readed by the 
 Both programs are CLI programs, so you need to enter the correct commands to handle the catastrophes!
 
 ## Commands
-Both programs have unix-like opparams.
+Both programs can handle unix-like program arguments thorugh boot::program_options:
 
-<code>
-v --verbose   : Print all operations to stdout
-</code>
+<pre>
+v --verbose      : Print all operations to stdout
+a --automatic    : Generate and resolve castastrophes automatically
+--automatic-rate : (Default = 10 seconds) the amount of time to generate/resolve when --automatic flag are setted
+</pre>
 
 ## Credits
 Developed by Javier Castro (www.jcastro0x.com | jcastro0x@gmail.com) with ❤️
 
-Powered by Boost 1.76 and C++17
+
+_Powered by_ 
+**Boost 1.76 and C++17**
