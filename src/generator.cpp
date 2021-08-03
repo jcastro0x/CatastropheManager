@@ -8,11 +8,18 @@
 
 // TODO: Take a look
 // https://www.educative.io/blog/modern-multithreading-and-concurrency-in-cpp
-// https://www.boost.org/doc/libs/1_71_0/doc/html/interprocess.html
-
 
 int main(int argc, char** argv)
 {
+    const char* title = R"(
+   ___|                                 |                
+  |       _ \  __ \    _ \   __|  _` |  __|   _ \    __| 
+  |   |   __/  |   |   __/  |    (   |  |    (   |  |    
+ \____| \___| _|  _| \___| _|   \__,_| \__| \___/  _|  
+              ~catastrophe manager suite~          
+    )";
+    std::cout << title << std::endl;
+
     options opt(argc, argv);
     if(opt.is_request_exit()) return EXIT_SUCCESS;
     opt.print_status();

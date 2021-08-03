@@ -20,8 +20,10 @@ Interpreter::Interpreter(const std::vector<Command>& commands)
 
 void Interpreter::run()
 {
+    m_bRunning = true;
+
     std ::string line;
-    while(std::getline(std::cin, line))
+    while(m_bRunning && std::getline(std::cin, line))
     {
         std::transform(line.begin(), line.end(), line.begin(), std::towlower);
         std::cout << "Input: " << line << "\n";

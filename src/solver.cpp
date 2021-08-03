@@ -8,6 +8,16 @@
 
 int main(int argc, char** argv)
 {
+    const char* title = R"(
+   ___|          |                    
+ \___ \    _ \   | \ \   /  _ \   __| 
+       |  (   |  |  \ \ /   __/  |    
+ _____/  \___/  _|   \_/  \___| _|    
+     ~catastrophe manager suite~
+    )";
+    std::cout << title << std::endl;
+
+
     options opt(argc, argv);
     if(opt.is_request_exit()) return EXIT_SUCCESS;
     opt.print_status();

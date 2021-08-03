@@ -15,4 +15,5 @@ public:
 private:
     std::vector<Command> m_commands     { };
     MemoryManager m_memoryManager       { };
+    bool m_bRunning                     { false };
 };
