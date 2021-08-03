@@ -1,0 +1,45 @@
+@startuml
+
+header powered by PlantUML
+title Catastrophe Manager
+
+enum ECatastrophes
+interface Command
+
+Command  <|-- Generate
+Command  <|-- Solve
+Command  <|-- Status
+Command  <|-- Quit
+
+Interpreter  <|-- Generator
+Interpreter  <|-- Solver
+Interpreter  *-- Options
+
+Interpreter *-- Command
+Interpreter *-- MemoryManager
+
+Interpreter <|. main
+MemoryManager +-- Boost::Interprocess
+MemoryManager +-- ECatastrophes
+
+
+class Interpreter {
+    run()
+    commands : vector<Command>
+}
+
+class MemoryManager {
+    createSharedMemory()
+    openSharedMemory()
+
+    pushCastastrophe(ECatastrophe)
+    pullCastastrophe()
+}
+
+class Options {
+    verbose : bool
+    automatic : bool
+    automatic-rate : float
+}
+
+@enduml
