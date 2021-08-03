@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     opt.print_status();
 
     std::vector<Command> commands = {
-        Command({"g", "generate"}, "Generate a castastrophe", [](auto& args){
+        Command({"g", "generate"}, "Generate a castastrophe", [](auto& interpreter, auto& args){
             std::cout << "Generating... " << args[0] << "\n";
         })
     };

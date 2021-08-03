@@ -7,11 +7,13 @@
 
 class Command
 {
-public:
-    explicit Command(const std::string& name, std::function<void(std::vector<std::string>&)> callback);
-    explicit Command(const std::vector<std::string>& names, const std::string& description, std::function<void(std::vector<std::string>&)> callback);
+    typedef std::function<void(class Interpreter&, std::vector<std::string>&)> CmdCallback;
 
-    bool execute(const std::string& input) const;
+public:
+    explicit Command(const std::string& name, CmdCallback callback);
+    explicit Command(const std::vector<std::string>& names, const std::string& description, CmdCallback callback);
+
+    bool execute(class Interpreter& interpreter, const std::string& input) const;
     std::string getName() const;
 
 private:
@@ -19,7 +21,7 @@ private:
     bool checkName(const std::string& name) const;
 
 private:
-    std::vector<std::string>                        m_names;
-    std::string                                     m_description;
-    std::function<void(std::vector<std::string>&)>   m_callback;
+    std::vector<std::string> m_names;
+    std::string              m_description;
+    CmdCallback              m_callback;
 };

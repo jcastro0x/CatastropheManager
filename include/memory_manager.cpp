@@ -6,26 +6,17 @@
 using namespace boost::interprocess;
 
 
-
-
-
-
 MemoryManager::MemoryManager() 
 {
 }
 
 MemoryManager::~MemoryManager() 
 {
-    std::cout << "Erasing shared memory";
-    
-    if(!shared_memory_object::remove(SharedMemory_UUID))
-    {
-        std::cerr << "Can't erase shared memory";
-    }
 }
 
 void MemoryManager::createSharedMemory()
 {
+    // Remove possibly old created shared memory
     shared_memory_object::remove(SharedMemory_UUID);
 
     m_segment = std::make_unique<managed_shared_memory>(create_only, SharedMemory_UUID, MemoryAllocated);

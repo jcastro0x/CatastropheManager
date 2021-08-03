@@ -9,8 +9,8 @@ Interpreter::Interpreter(const std::vector<Command>& commands)
 {
     std::vector<Command> innerCommands = {
 
-        Command({"q", "quit"}, "Close the program", [](auto& args){
-            std::exit(0);
+        Command({"q", "quit"}, "Close the program", [](auto& interpreter, auto& args){
+            interpreter.request_exit();
         })
         
     };
@@ -30,9 +30,14 @@ void Interpreter::run()
 
         for(auto& cmd : m_commands)
         {
-            if(cmd.execute(line)) break;
+            if(cmd.execute(*this, line)) break;
         }
     }
+}
+
+void Interpreter::request_exit()
+{
+    m_bRunning = false;
 }
 
 void Interpreter::printCommands() const 

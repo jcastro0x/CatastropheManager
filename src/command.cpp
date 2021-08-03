@@ -3,19 +3,19 @@
 
 #include <boost/algorithm/string.hpp>
 
-Command::Command(const std::string& name, std::function<void(std::vector<std::string>&)> callback)
+Command::Command(const std::string& name, CmdCallback callback)
 : Command({name}, "", callback)
 {
 }
 
-Command::Command(const std::vector<std::string>& names, const std::string& description, std::function<void(std::vector<std::string>&)> callback)
+Command::Command(const std::vector<std::string>& names, const std::string& description, CmdCallback callback)
 : m_names(names), m_description(description), m_callback(callback)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
     if(!m_callback)         throw std::runtime_error("Command without bind command");
 }
 
-bool Command::execute(const std::string& input) const
+bool Command::execute(class Interpreter& interpreter, const std::string& input) const
 {
     if(input.empty()) return false;
 
@@ -23,7 +23,7 @@ bool Command::execute(const std::string& input) const
     if(checkName(args[0]))
     {
         args.erase(args.begin());
-        m_callback(args);
+        m_callback(interpreter, args);
         return true;
     }
 

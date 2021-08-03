@@ -9,6 +9,7 @@ class Interpreter final
 public:
     explicit Interpreter(const std::vector<Command>& commands);
     void run();
+    void request_exit();
 
     void printCommands() const;
 

@@ -23,11 +23,11 @@ int main(int argc, char** argv)
     opt.print_status();
 
     std::vector<Command> commands = {
-        Command({"s", "solver"}, "Solve a castastrophe", [](auto& args){
+        Command({"s", "solver"}, "Solve a castastrophe", [](auto& interpreter, auto& args){
             std::cout << "Solving... " << args[0] << "\n";
         })
     };
-
+ 
     std::cout << "Welcome to \033[31mCATASTROPHE SOLVER\033[0m suite\n";
     std::cout << "\033[36mPlease read README.MD from git repository to know how make fun things!\033[0m\n\n";
     {
