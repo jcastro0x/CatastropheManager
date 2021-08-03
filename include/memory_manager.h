@@ -2,6 +2,9 @@
 
 #include <cstdint>
 #include <stack>
+#include <memory>
+
+#include <boost/interprocess/managed_shared_memory.hpp>
 
 #ifdef NDEBUG
 #include <iostream>
@@ -20,31 +23,23 @@ enum class ECatastrophes : std::uint8_t
     Godzilla        // Why not?
 };
 
-class MemoryManager
+class MemoryManager final
 {
     static constexpr const char* UUID               { "CatastropheUUID" };      // Indentifier used to Shared Memory
-    static constexpr std::size_t MemoryAllocated    { 1024 };                   // How much memory used when allocated the shared memoryç
+    static constexpr std::size_t MemoryAllocated    { INT_MAX };                   // How much memory used when allocated the shared memoryç
 
 
 public:
     explicit MemoryManager();
+    ~MemoryManager();
 
-    /***
-     * @brief Returns the higher active castastrophe in the LIFO list 
-     */
+    void createSharedMemory();
+    void openSharedMemory();
+
     ECatastrophes getActiveCastastrophe() const;
 
     bool hasAnyCastastrophe() const;
-
-    /***
-     * @brief Push a new catastrophe
-     * @param castastrophe The castastrophe will be added
-     */
     void pushCastastrophe(ECatastrophes catastrophes);
-
-    /***
-     * @brief Pull the last added castastrophe
-     */
     void pullCastastrophe() noexcept;
 
 
@@ -74,4 +69,5 @@ private:
 
 private:
     std::stack<ECatastrophes> m_activeCastastrophes;
+    std::unique_ptr<boost::interprocess::managed_shared_memory> m_segment;
 };

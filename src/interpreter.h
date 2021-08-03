@@ -1,6 +1,8 @@
 #pragma once
 
 #include "command.h"
+#include <memory_manager.h>
+
 
 class Interpreter final
 {
@@ -11,5 +13,6 @@ public:
     void printCommands() const;
 
 private:
-    std::vector<Command> m_commands;
+    std::vector<Command> m_commands     { };
+    MemoryManager m_memoryManager       { };
 };
