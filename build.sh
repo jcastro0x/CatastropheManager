@@ -9,19 +9,21 @@ fi
 mkdir $BUILD_DIR
 
 
+INCLUDE_DIR="-Iinclude"
+BOOST_LIBS="-lboost_date_time -lboost_program_options -lrt"
+COMMON_FILES="src/interpreter.cpp src/command.cpp include/common.cpp include/options.cpp"
 
-#BOOST_LIBS = -lboost_date_time -lboost_program_options -lrt
 
 # Build Generator
 echo "(1/2) Building Generator..."
 GENERATOR_NAME="generator"
-g++ src/generator.cpp src/interpreter.cpp src/command.cpp include/common.cpp -Iinclude -lboost_date_time -lboost_program_options -lrt -o $GENERATOR_NAME
+g++ src/generator.cpp $COMMON_FILES $INCLUDE_DIR $BOOST_LIBS -o $GENERATOR_NAME
 mv $GENERATOR_NAME $BUILD_DIR/$GENERATOR_NAME
 
 # Build Solver
 echo "(2/2) Building Solver..."
 SOLVER_NAME="solver"
-g++ src/solver.cpp src/interpreter.cpp src/command.cpp include/common.cpp -Iinclude -lboost_date_time -lrt -o $SOLVER_NAME
+g++ src/solver.cpp $COMMON_FILES $INCLUDE_DIR $BOOST_LIBS -o $SOLVER_NAME
 mv $SOLVER_NAME $BUILD_DIR/$SOLVER_NAME
 
 echo "Done!"
