@@ -1,12 +1,14 @@
 #include "command.h"
 #include <stdexcept>
 
-Command::Command(const std::string& name, std::function<void()> callback)
+#include <boost/algorithm/string.hpp>
+
+Command::Command(const std::string& name, std::function<void(std::vector<std::string>&)> callback)
 : Command({name}, "", callback)
 {
 }
 
-Command::Command(const std::vector<std::string>& names, const std::string& description, std::function<void()> callback)
+Command::Command(const std::vector<std::string>& names, const std::string& description, std::function<void(std::vector<std::string>&)> callback)
 : m_names(names), m_description(description), m_callback(callback)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
@@ -15,9 +17,13 @@ Command::Command(const std::vector<std::string>& names, const std::string& descr
 
 bool Command::execute(const std::string& input) const
 {
-    if(checkName(input))
+    if(input.empty()) return false;
+
+    auto args = split(input);
+    if(checkName(args[0]))
     {
-        m_callback();
+        args.erase(args.begin());
+        m_callback(args);
         return true;
     }
 
@@ -27,6 +33,13 @@ bool Command::execute(const std::string& input) const
 std::string Command::getName() const 
 {
     return m_names[0];
+}
+
+std::vector<std::string> Command::split(const std::string& input) const
+{
+    std::vector<std::string> result;
+    boost::split(result, input, boost::is_any_of(" "));
+    return result;  //RVO
 }
 
 bool Command::checkName(const std::string& name) const 

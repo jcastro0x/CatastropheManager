@@ -9,13 +9,10 @@ Interpreter::Interpreter(const std::vector<Command>& commands)
 {
     std::vector<Command> innerCommands = {
 
-        Command("q", [](){
-            std::cout << "Close program\n";
+        Command({"q", "quit"}, "Close the program", [](auto& args){
             std::exit(0);
-        }),
-        Command("h", [this](){
-            printCommands();
         })
+        
     };
 
     m_commands.insert(m_commands.begin(), innerCommands.begin(), innerCommands.end());
