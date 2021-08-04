@@ -25,6 +25,6 @@ CmdGenerate::CmdGenerate()
 {
 }
 
-void CmdGenerate::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
 {
 }

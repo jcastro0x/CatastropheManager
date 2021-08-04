@@ -29,7 +29,7 @@ CmdHelp::CmdHelp()
 {
 }
 
-void CmdHelp::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdHelp::execute(Interpreter& interpreter, ArgsVector args) const
 {
     for(const auto& cmd : interpreter.getCommands())
     {

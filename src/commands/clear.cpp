@@ -21,12 +21,14 @@
 #include <commands/clear.h>
 #include <interpreter.h>
 
+#include <iostream>
+
 CmdClear::CmdClear()
 : Command({"clear", "cls"}, "Clear the screen")
 {
 }
 
-void CmdClear::execute(Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdClear::execute(Interpreter& interpreter, ArgsVector args) const
 {
     std::cout << "\033[2J"; // clear screen
 }

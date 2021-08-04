@@ -21,12 +21,14 @@
 #include <commands/options.h>
 #include <interpreter.h>
 
+#include <iostream>
+
 CmdOptions::CmdOptions()
 : Command({"options", "o"}, "Print status options")
 {
 }
 
-void CmdOptions::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdOptions::execute(Interpreter& interpreter, ArgsVector args) const
 {
     const auto& options = interpreter.getOptions();
 

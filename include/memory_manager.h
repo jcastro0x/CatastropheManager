@@ -29,10 +29,6 @@
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 
-#ifndef NDEBUG
-#include <iostream>
-#endif
-
 enum class ECatastrophes : std::uint8_t
 {
     None,           // All is quite and peacefully

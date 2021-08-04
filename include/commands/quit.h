@@ -28,5 +28,5 @@ public:
     explicit CmdQuit();
 
 private:
-    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
+    void execute(class Interpreter& interpreter, ArgsVector args) const override;
 };

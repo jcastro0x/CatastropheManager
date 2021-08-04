@@ -26,7 +26,7 @@ CmdQuit::CmdQuit()
 {
 }
 
-void CmdQuit::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdQuit::execute(Interpreter& interpreter, ArgsVector args) const
 {
     interpreter.request_exit();
 }

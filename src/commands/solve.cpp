@@ -25,6 +25,6 @@ CmdSolve::CmdSolve()
 {
 }
 
-void CmdSolve::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdSolve::execute(Interpreter& interpreter, ArgsVector args) const
 {
 }

@@ -25,6 +25,6 @@ CmdStatus::CmdStatus()
 {
 }
 
-void CmdStatus::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+void CmdStatus::execute(Interpreter& interpreter, ArgsVector args) const
 {
 }

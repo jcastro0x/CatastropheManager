@@ -23,13 +23,13 @@
 
 #include <boost/algorithm/string.hpp>
 
-Command::Command(const std::vector<std::string>& names, const std::string& description)
+Command::Command(ArgsVector names, const std::string& description)
 : m_names(names), m_description(description)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
 }
 
-bool Command::check(class Interpreter& interpreter, const std::string& input) const
+bool Command::check(Interpreter& interpreter, const std::string& input) const
 {
     if(input.empty()) return false;
 
