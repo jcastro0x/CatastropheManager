@@ -45,6 +45,13 @@ a --automatic    : Generate and resolve castastrophes automatically
 --automatic-rate : (Default = 10 seconds) the amount of time to generate/resolve when --automatic flag are setted
 </pre>
 
+## Diagram
+Below is the diagram of the program's structure.
+`Interpreter` are the mainly class that manages all program stuffs. Stores the current commands that, thought pointer to Interpreter, can access to all other things (like other commands, options or memory manager).
+
+`Interpreter` initalizes the default commands based on `options`. By default, the two modes had the same commands, except for the command `generate` that it's created only if `options` was initialized with --mode=generator, and command `solve` if was initialized with --mode=solver.
+![screenshot](diagram.png)
+
 ## Credits
 Developed by Javier Castro (www.jcastro0x.com | jcastro0x@gmail.com) with ❤️
 
