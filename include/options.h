@@ -32,5 +32,5 @@ private:
 
     bool m_requestExit          { false };
 
-    EMode m_runAs               { EMode::Generator }
+    EMode m_runAs               { EMode::Generator };
 };

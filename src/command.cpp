@@ -1,16 +1,15 @@
-#include <command.h>
+#include <commands/command.h>
 #include <stdexcept>
 
 #include <boost/algorithm/string.hpp>
 
-Command::Command(const std::vector<std::string>& names, const std::string& description, CmdCallback callback)
-: m_names(names), m_description(description), m_callback(callback)
+Command::Command(const std::vector<std::string>& names, const std::string& description)
+: m_names(names), m_description(description)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
-    if(!m_callback)         throw std::runtime_error("Command without bind command");
 }
 
-bool Command::execute(class Interpreter& interpreter, const std::string& input) const
+bool Command::check(class Interpreter& interpreter, const std::string& input) const
 {
     if(input.empty()) return false;
 
@@ -18,16 +17,21 @@ bool Command::execute(class Interpreter& interpreter, const std::string& input) 
     if(checkName(args[0]))
     {
         args.erase(args.begin());
-        m_callback(interpreter, args);
+        execute(interpreter, args);
         return true;
     }
 
     return false;
 }
 
-std::string Command::getName() const 
+const std::string& Command::getName() const 
 {
     return m_names[0];
+}
+
+const std::string& Command::getDescription() const 
+{
+    return m_description;
 }
 
 std::vector<std::string> Command::split(const std::string& input) const

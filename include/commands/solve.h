@@ -1,7 +1,12 @@
-#include <command.h>
+#pragma once
 
-class CmdSolve final : Command
+#include <commands/command.h>
+
+class CmdSolve final : public Command
 {
+public:    
     explicit CmdSolve();
-    bool execute(class Interpreter& interpreter, const std::string& input) const override;
+    
+private:
+    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
 };

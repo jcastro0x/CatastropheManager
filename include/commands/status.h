@@ -1,7 +1,12 @@
-#include <command.h>
+#pragma once
 
-class CmdStatus final : Command
+#include <commands/command.h>
+
+class CmdStatus final : public Command
 {
+public:    
     explicit CmdStatus();
-    bool execute(class Interpreter& interpreter, const std::string& input) const override;
+
+private:    
+    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
 };

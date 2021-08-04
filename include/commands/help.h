@@ -2,11 +2,11 @@
 
 #include <commands/command.h>
 
-class CmdQuit final : public Command
+class CmdHelp final : public Command
 {
-public:
-    explicit CmdQuit();
-
+public:    
+    explicit CmdHelp();
+    
 private:
     void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
 };

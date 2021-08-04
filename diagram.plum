@@ -7,6 +7,7 @@ Command  <|-- Generate
 Command  <|-- Solve
 Command  <|-- Status
 Command  <|-- Quit
+Command  <|-- Help
 
 Options +- EMode
 
@@ -28,7 +29,8 @@ class Interpreter {
 }
 
 interface Command {
-    run(Interpreter, args)
+    check(Interpreter, input : string) : bool
+    execute(Interpreter, args)
 }
 
 class MemoryManager {

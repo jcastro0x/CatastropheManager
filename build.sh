@@ -11,14 +11,15 @@ mkdir $BUILD_DIR
 CC="g++"
 INCLUDE_DIR="-Iinclude"
 LIBS="-lboost_date_time -lboost_program_options -lrt -lpthread"
-COMMON_FILES="src/interpreter.cpp src/command.cpp src/memory_manager.cpp src/options.cpp"
+COMMON_FILES="src/interpreter.cpp src/memory_manager.cpp src/options.cpp"
+COMMANDS_FILES="src/command.cpp src/commands/generate.cpp src/commands/quit.cpp src/commands/solve.cpp src/commands/status.cpp src/commands/help.cpp"
 #DEBUG="-DNDEBUG -O3"
 DEBUG=""
 
 # Build Generator
 echo "(1/2) Building Base Program..."
 PROGRAM_NAME="catastrophe"
-$CC src/main.cpp $COMMON_FILES $INCLUDE_DIR $LIBS $DEBUG -o $PROGRAM_NAME
+$CC src/main.cpp $COMMON_FILES $COMMANDS_FILES $INCLUDE_DIR $LIBS $DEBUG -o $PROGRAM_NAME
 mv $PROGRAM_NAME $BUILD_DIR/$PROGRAM_NAME
 
 # Build executers

@@ -1,7 +1,12 @@
-#include <command.h>
+#pragma once
 
-class CmdGenerate final : Command
+#include <commands/command.h>
+
+class CmdGenerate final : public Command
 {
+public:
     explicit CmdGenerate();
-    bool execute(class Interpreter& interpreter, const std::string& input) const override;
+
+private:
+    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
 };
