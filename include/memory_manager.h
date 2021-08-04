@@ -68,6 +68,7 @@ public:
     [[nodiscard]] ECatastrophes getActiveCastastrophe() const noexcept;
     [[nodiscard]] bool hasAnyCastastrophe() const noexcept;
     [[nodiscard]] std::string getCastastropheName(ECatastrophes catastrophe) const;
+    [[nodiscard]] ECatastrophes getCastastrophe(std::string_view name) const;
 
 private:
     std::stack<ECatastrophes> m_activeCastastrophes;

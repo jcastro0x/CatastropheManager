@@ -20,11 +20,13 @@
 
 #pragma once
 
-#include "commands/generate.h"
-#include "commands/quit.h"
-#include "commands/solve.h"
-#include "commands/status.h"
-#include "commands/help.h"
-#include "commands/options.h"
-#include "commands/clear.h"
-#include "commands/catastrophes_list.h"
+#include <commands/command.h>
+
+class CmdCatastrophesList final : public Command
+{
+public:    
+    explicit CmdCatastrophesList();
+    
+private:
+    void execute(class Interpreter& interpreter, ArgsVector args) const override;
+};

@@ -98,6 +98,19 @@ std::string MemoryManager::getCastastropheName(ECatastrophes catastrophe) const
     return CastastrophesNames[index];
 }
 
+ECatastrophes MemoryManager::getCastastrophe(std::string_view name) const
+{
+    for(int i = 0; i < static_cast<int>(ECatastrophes::COUNT); i++)
+    {
+        if(CastastrophesNames[i] == name)
+        {
+            return static_cast<ECatastrophes>(i);
+        }
+    }
+
+    return ECatastrophes::None;
+}
+
 
 
 

@@ -35,6 +35,7 @@ Interpreter::Interpreter(int argc, char** argv)
     m_commands.emplace_back(std::make_unique<CmdOptions>());
     m_commands.emplace_back(std::make_unique<CmdStatus>());
     m_commands.emplace_back(std::make_unique<CmdClear>());
+    m_commands.emplace_back(std::make_unique<CmdCatastrophesList>());
 
     if(!m_options.is_no_clear())
     {
@@ -46,7 +47,7 @@ Interpreter::Interpreter(int argc, char** argv)
         std::cout << generator_title << std::endl;
         m_commands.emplace_back(std::make_unique<CmdGenerate>());
         
-        m_memoryManager.createSharedMemory();
+        getMemoryManager().createSharedMemory();
     }
     else
     {
@@ -102,6 +103,12 @@ const std::vector<std::unique_ptr<Command>>& Interpreter::getCommands() const
 const MemoryManager& Interpreter::getMemoryManager() const
 {
     return m_memoryManager;
+}
+
+MemoryManager& Interpreter::getMemoryManager()
+{
+    const auto& mm = const_cast<const Interpreter*>(this)->getMemoryManager();
+    return const_cast<MemoryManager&>(mm);
 }
 
 const Options& Interpreter::getOptions() const

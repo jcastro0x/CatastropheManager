@@ -18,13 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 // SOFTWARE.
 
-#pragma once
+#include <commands/catastrophes_list.h>
+#include <interpreter.h>
 
-#include "commands/generate.h"
-#include "commands/quit.h"
-#include "commands/solve.h"
-#include "commands/status.h"
-#include "commands/help.h"
-#include "commands/options.h"
-#include "commands/clear.h"
-#include "commands/catastrophes_list.h"
+#include <iostream>
+
+CmdCatastrophesList::CmdCatastrophesList()
+: Command({"catastrophes-list", "clist"}, "List all available catastrophes")
+{
+}
+
+void CmdCatastrophesList::execute(Interpreter& interpreter, ArgsVector args) const
+{
+    const auto& mm = interpreter.getMemoryManager();
+
+    for(int i = 0; i < static_cast<int>(ECatastrophes::COUNT); i++)
+    {
+        std::cout << "[" << (i+1) << "] " 
+        << mm.getCastastropheName(static_cast<ECatastrophes>(i)) << "\n";
+    }
+    std::cout << std::flush;
+}

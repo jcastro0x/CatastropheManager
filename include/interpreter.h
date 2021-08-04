@@ -38,6 +38,7 @@ public:
 
     [[nodiscard]] const std::vector<std::unique_ptr<Command>>& getCommands() const;
     [[nodiscard]] const MemoryManager& getMemoryManager() const;
+    [[nodiscard]] MemoryManager& getMemoryManager();
     [[nodiscard]] const Options& getOptions() const;
 
 private:

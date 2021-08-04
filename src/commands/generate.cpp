@@ -19,6 +19,11 @@
 // SOFTWARE.
 
 #include <commands/generate.h>
+#include <interpreter.h>
+#include <memory_manager.h>
+
+#include <algorithm>
+#include <iostream>
 
 CmdGenerate::CmdGenerate()
 : Command({"generate", "g"}, "Push a new catastrophe into shared memory")
@@ -27,4 +32,32 @@ CmdGenerate::CmdGenerate()
 
 void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
 {
+    if(args.size() < 1)
+    {
+        std::cerr << "Error arguments" << std::endl;
+        return;
+    }
+
+    auto& mm = interpreter.getMemoryManager();
+
+    std::string catastropheName;
+    for(int i = 0; i < args.size(); i++)
+    {
+        catastropheName = args[i];
+        std::transform(catastropheName.begin(), catastropheName.end(), catastropheName.begin(), std::towlower);
+        catastropheName[0] -= 32; //toupper first character
+
+        ECatastrophes catastrophe = mm.getCastastrophe(catastropheName);
+        if(catastrophe != ECatastrophes::None)
+        {
+            mm.pushCastastrophe(catastrophe);
+        }
+        else
+        {
+            std::cerr 
+            << "Can't create a catastrophe o type '" << catastropheName << "'\n";
+        }
+    }
+
+    std::cout << std::flush;
 }
