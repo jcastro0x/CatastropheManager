@@ -21,6 +21,9 @@
 #include <commands/help.h>
 #include <interpreter.h>
 
+#include <iostream>
+#include <iomanip>
+
 CmdHelp::CmdHelp()
 : Command({"help", "h"}, "Print available commands")
 {
@@ -28,5 +31,16 @@ CmdHelp::CmdHelp()
 
 void CmdHelp::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
 {
-    interpreter.printCommands();
+    for(const auto& cmd : interpreter.getCommands())
+    {
+        constexpr std::size_t width { 70 };
+        const auto& name        = cmd->getName();
+        const auto& description = cmd->getDescription();
+        
+        std::cout   << "[\033[31m" << name << "\033[0m]"
+                    << std::setw(std::min<size_t>(9999999, width-name.size())) << std::setfill('.')
+                    << description
+                    << "\n";
+    }
+    std::cout << std::flush;
 }

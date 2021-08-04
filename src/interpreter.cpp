@@ -22,17 +22,19 @@
 #include <commands.h>
 
 #include <iostream>
-#include <iomanip>
 #include <algorithm>
 
 Interpreter::Interpreter(int argc, char** argv)
 : m_options(argc, argv)
 {
+    m_bRunning = !m_options.is_request_exit();
+    if(!m_bRunning) return;
+
     m_commands.emplace_back(std::make_unique<CmdQuit>());
     m_commands.emplace_back(std::make_unique<CmdHelp>());
     m_commands.emplace_back(std::make_unique<CmdStatus>());
 
-    std::cout << "\033[2J"; // clear screen
+    //std::cout << "\033[2J"; // clear screen
     if(m_options.get_runAs() == EMode::Generator)
     {
         std::cout << generator_title << std::endl;
@@ -49,8 +51,6 @@ Interpreter::Interpreter(int argc, char** argv)
 
 void Interpreter::run()
 {
-    m_bRunning = true;
-
     std::string line;
     bool bLastCommandExecuted = false;
     while(m_bRunning && std::getline(std::cin, line))
@@ -79,18 +79,17 @@ void Interpreter::request_exit()
     m_bRunning = false;
 }
 
-void Interpreter::printCommands() const 
+const std::vector<std::unique_ptr<Command>>& Interpreter::getCommands() const
 {
-    for(auto& cmd : m_commands)
-    {
-        constexpr std::size_t width { 70 };
-        const auto& name        = cmd->getName();
-        const auto& description = cmd->getDescription();
-        
-        std::cout   << "[\033[31m" << name << "\033[0m]"
-                    << std::setw(std::min<size_t>(9999999, width-name.size())) << std::setfill('.')
-                    << description
-                    << "\n";
-    }
-    std::cout << std::flush;
+    return m_commands;
+}
+
+const MemoryManager& Interpreter::getMemoryManager() const
+{
+    return m_memoryManager;
+}
+
+const Options& Interpreter::getOptions() const
+{
+    return m_options;
 }

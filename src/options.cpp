@@ -26,15 +26,20 @@
 
 Options::Options(int argc, char** argv)
 {
+    std::string str_runAs;
+
     namespace po = boost::program_options;
     po::options_description generic("Options");
     generic.add_options()
-    ("help,h",                                "produce help message")
-    ("verbose,v",                             "print to stdout all kind of operations")
-    ("mode,m",                                "run as Generator or Solver")
-    ("automatic,a",                           "generate automatic catastrophes")
-    ("automatic-rate,r",  po::value<float>(&m_automatic_rate)->default_value(10.0f)
+    ("help,h",                         "produce help message")
+    ("verbose,v",                      "print to stdout all kind of operations")
+    
+    ("automatic,a",                    "generate automatic catastrophes")    
+    ("automatic-rate,r", po::value<float>(&m_automatic_rate)->default_value(10.0f)
     , "seconds rate to generate automatic catastrophes")
+    
+    ("mode,m",       po::value<std::string>(&str_runAs)->default_value("generator"),
+    "run as 'generator' or 'solver'")
     ;
 
     po::variables_map vm;
@@ -46,6 +51,11 @@ Options::Options(int argc, char** argv)
         std::cout << generic << "\n";
         m_requestExit = true;
         return;
+    }
+
+    if(vm.count("verbose"))
+    {
+        m_verbose = true;
     }
 
     if(vm.count("automatic"))
@@ -60,11 +70,15 @@ Options::Options(int argc, char** argv)
 
     if (vm.count("mode")) 
     {
-        std::string str_mode = vm["mode"].as<std::string>();
-        std::transform(str_mode.begin(), str_mode.end(), str_mode.begin(), std::towlower);
-        if(str_mode == "solver") m_runAs = EMode::Solver;
-        else m_runAs = EMode::Generator;
-    } 
+        str_runAs = vm["mode"].as<std::string>();
+        std::cout << "Detected mode: " << str_runAs << std::endl;
+        std::transform(str_runAs.begin(), str_runAs.end(), str_runAs.begin(), std::towlower);
+
+        if(str_runAs == "solver") m_runAs = EMode::Solver;
+        else                      m_runAs = EMode::Generator;
+    }
+
+    print_status(); 
 }
 
 bool Options::is_verbose() const
@@ -90,6 +104,7 @@ EMode Options::get_runAs() const
     return m_runAs;
 }
 
+//TODO: Delete me
 void Options::print_status() const 
 {
     auto BoolToString = [](bool b) constexpr {

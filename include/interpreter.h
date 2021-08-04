@@ -33,12 +33,17 @@ public:
     void run();
     void request_exit();
 
-    void printCommands() const;
+    template<typename... Args>
+    void print(const char* format, Args... args) const;
+
+    const std::vector<std::unique_ptr<Command>>& getCommands() const;
+    const MemoryManager& getMemoryManager() const;
+    const Options& getOptions() const;
 
 private:
     std::vector<std::unique_ptr<Command>>   m_commands      {       };
     MemoryManager                           m_memoryManager {       };
-    Options                                 m_options                ;
+    Options                                 m_options       /* ctor*/;
     bool                                    m_bRunning      { false };
 
 
