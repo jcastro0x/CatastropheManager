@@ -1,9 +1,17 @@
 #pragma once
 
-class options
+#include <cstdint>
+
+enum class EMode : uint8_t
+{
+    Generator,
+    Solver
+};
+
+class Options
 {
 public:
-    explicit options(int argc, char** argv);
+    explicit Options(int argc, char** argv);
 
 public:
     bool is_verbose() const; 
@@ -11,6 +19,8 @@ public:
     float get_automatic_rate() const;
 
     bool is_request_exit() const;
+
+    EMode get_runAs() const;
 
 public:
     void print_status() const;
@@ -21,4 +31,6 @@ private:
     float m_automatic_rate      { 10.f  };
 
     bool m_requestExit          { false };
+
+    EMode m_runAs               { EMode::Generator }
 };

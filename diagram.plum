@@ -18,6 +18,7 @@ Interpreter <|. main
 MemoryManager +-- Boost::Interprocess
 MemoryManager +- ECatastrophes
 MemoryManager .. Command
+MemoryManager .. Options
 
 
 class Interpreter {

@@ -16,15 +16,19 @@ COMMON_FILES="src/interpreter.cpp src/command.cpp src/memory_manager.cpp src/opt
 DEBUG=""
 
 # Build Generator
-echo "(1/2) Building Generator..."
-GENERATOR_NAME="generator"
-$CC src/generator.cpp $COMMON_FILES $INCLUDE_DIR $LIBS $DEBUG -o $GENERATOR_NAME
-mv $GENERATOR_NAME $BUILD_DIR/$GENERATOR_NAME
+echo "(1/2) Building Base Program..."
+PROGRAM_NAME="catastrophe"
+$CC src/main.cpp $COMMON_FILES $INCLUDE_DIR $LIBS $DEBUG -o $PROGRAM_NAME
+mv $PROGRAM_NAME $BUILD_DIR/$PROGRAM_NAME
 
-# Build Solver
-echo "(2/2) Building Solver..."
+# Build executers
+echo "(2/2) Building Executers..."
+GENERATOR_NAME="generator"
 SOLVER_NAME="solver"
-$CC src/solver.cpp $COMMON_FILES $INCLUDE_DIR $LIBS $DEBUG -o $SOLVER_NAME
-mv $SOLVER_NAME $BUILD_DIR/$SOLVER_NAME
+echo ".\$PROGRAM_NAME --mode=generator" >> $GENERATOR_NAME
+echo ".\$PROGRAM_NAME --mode=solver" >> $SOLVER_NAME
+chmod +x $GENERATOR_NAME
+chmod +x $SOLVER_NAME
+mv $GENERATOR_NAME $SOLVER_NAME $BUILD_DIR/
 
 echo "Done!"

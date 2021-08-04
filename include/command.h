@@ -10,10 +10,8 @@ class Command
     typedef std::function<void(class Interpreter&, std::vector<std::string>&)> CmdCallback;
 
 public:
-    explicit Command(const std::string& name, CmdCallback callback);
     explicit Command(const std::vector<std::string>& names, const std::string& description, CmdCallback callback);
-
-    bool execute(class Interpreter& interpreter, const std::string& input) const;
+    virtual bool execute(class Interpreter& interpreter, const std::string& input) const = 0;
     std::string getName() const;
 
 private:
