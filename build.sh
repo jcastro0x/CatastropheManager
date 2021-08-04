@@ -26,8 +26,9 @@ mv $PROGRAM_NAME $BUILD_DIR/$PROGRAM_NAME
 echo "(2/2) Building Executers..."
 GENERATOR_NAME="generator"
 SOLVER_NAME="solver"
-echo ".\$PROGRAM_NAME --mode=generator" >> $GENERATOR_NAME
-echo ".\$PROGRAM_NAME --mode=solver" >> $SOLVER_NAME
+echo "./catastrophe --mode=generator" >> $GENERATOR_NAME
+echo "./catastrophe --mode=solver" >> $SOLVER_NAME
+
 chmod +x $GENERATOR_NAME
 chmod +x $SOLVER_NAME
 mv $GENERATOR_NAME $SOLVER_NAME $BUILD_DIR/

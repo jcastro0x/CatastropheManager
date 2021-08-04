@@ -40,6 +40,7 @@ Interpreter::Interpreter(int argc, char** argv)
     {
         std::cout << generator_title << std::endl;
         m_commands.emplace_back(std::make_unique<CmdGenerate>());
+        m_memoryManager.createSharedMemory();
     }
     else
     {

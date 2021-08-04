@@ -25,7 +25,7 @@
 #include <iomanip>
 
 CmdHelp::CmdHelp()
-: Command({"help", "h"}, "Print available commands")
+: Command({"help", "h", "?"}, "Print available commands")
 {
 }
 
@@ -38,7 +38,7 @@ void CmdHelp::execute(class Interpreter& interpreter, std::vector<std::string>& 
         const auto& description = cmd->getDescription();
         
         std::cout   << "[\033[31m" << name << "\033[0m]"
-                    << std::setw(std::min<size_t>(9999999, width-name.size())) << std::setfill('.')
+                    << std::setw(std::min<size_t>(0, width-name.size())) << std::setfill('.')
                     << description
                     << "\n";
     }
