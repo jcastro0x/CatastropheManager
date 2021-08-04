@@ -77,8 +77,6 @@ Options::Options(int argc, char** argv)
         if(str_runAs == "solver") m_runAs = EMode::Solver;
         else                      m_runAs = EMode::Generator;
     }
-
-    print_status(); 
 }
 
 bool Options::is_verbose() const
@@ -104,7 +102,6 @@ EMode Options::get_runAs() const
     return m_runAs;
 }
 
-//TODO: Delete me
 void Options::print_status() const 
 {
     auto BoolToString = [](bool b) constexpr {

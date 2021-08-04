@@ -18,11 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 // SOFTWARE.
 
-#pragma once
+#include <commands/options.h>
+#include <interpreter.h>
 
-#include "commands/generate.h"
-#include "commands/quit.h"
-#include "commands/solve.h"
-#include "commands/status.h"
-#include "commands/help.h"
-#include "commands/options.h"
+CmdOptions::CmdOptions()
+: Command({"options", "o"}, "Print status options")
+{
+}
+
+void CmdOptions::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
+{
+    interpreter.getOptions().print_status();
+}

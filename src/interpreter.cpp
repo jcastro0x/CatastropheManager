@@ -32,6 +32,7 @@ Interpreter::Interpreter(int argc, char** argv)
 
     m_commands.emplace_back(std::make_unique<CmdQuit>());
     m_commands.emplace_back(std::make_unique<CmdHelp>());
+    m_commands.emplace_back(std::make_unique<CmdOptions>());
     m_commands.emplace_back(std::make_unique<CmdStatus>());
 
     //std::cout << "\033[2J"; // clear screen

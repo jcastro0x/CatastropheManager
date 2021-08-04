@@ -20,9 +20,13 @@
 
 #pragma once
 
-#include "commands/generate.h"
-#include "commands/quit.h"
-#include "commands/solve.h"
-#include "commands/status.h"
-#include "commands/help.h"
-#include "commands/options.h"
+#include <commands/command.h>
+
+class CmdOptions final : public Command
+{
+public:    
+    explicit CmdOptions();
+    
+private:
+    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
+};
