@@ -28,5 +28,20 @@ CmdOptions::CmdOptions()
 
 void CmdOptions::execute(class Interpreter& interpreter, std::vector<std::string>& args) const
 {
-    interpreter.getOptions().print_status();
+    const auto& options = interpreter.getOptions();
+
+    auto BoolToString = [](bool b) constexpr {
+        return b ? "True" : "False";
+    };
+
+    auto ModeToString = [](EMode m) constexpr {
+        return m == EMode::Generator ? "Generator" : "Solver";
+    };
+
+    std::cout << "Program initialized with next parameters:\n";
+    std::cout << "Verbose        : " << BoolToString(options.is_verbose())   << "\n";
+    std::cout << "Automatic      : " << BoolToString(options.is_automatic()) << "\n";
+    std::cout << "No-Clear       : " << BoolToString(options.is_no_clear())  << "\n";
+    std::cout << "Run As         : " << ModeToString(options.get_runAs())    << "\n";
+    std::cout << "Automatic Rate : " << options.get_automatic_rate()         << "\n";
 }

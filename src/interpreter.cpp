@@ -34,12 +34,18 @@ Interpreter::Interpreter(int argc, char** argv)
     m_commands.emplace_back(std::make_unique<CmdHelp>());
     m_commands.emplace_back(std::make_unique<CmdOptions>());
     m_commands.emplace_back(std::make_unique<CmdStatus>());
+    m_commands.emplace_back(std::make_unique<CmdClear>());
 
-    //std::cout << "\033[2J"; // clear screen
+    if(!m_options.is_no_clear())
+    {
+        std::cout << "\033[2J"; // clear screen
+    }
+
     if(m_options.get_runAs() == EMode::Generator)
     {
         std::cout << generator_title << std::endl;
         m_commands.emplace_back(std::make_unique<CmdGenerate>());
+        
         m_memoryManager.createSharedMemory();
     }
     else
@@ -71,6 +77,11 @@ void Interpreter::run()
 
         if(!bLastCommandExecuted){
             std::cerr << "\033[31mCommand [" << line << "] not found\033[0m\n";
+        }
+
+        // Print prompt
+        if(m_bRunning){
+            std::cout << "$: ";
         }
     }
 }

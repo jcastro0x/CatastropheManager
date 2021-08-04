@@ -20,35 +20,13 @@
 
 #pragma once
 
-#include <cstdint>
+#include <commands/command.h>
 
-enum class EMode : uint8_t
-{
-    Generator,
-    Solver
-};
-
-class Options
+class CmdClear final : public Command
 {
 public:
-    explicit Options(int argc, char** argv);
-
-public:
-    [[nodiscard]] bool is_verbose() const; 
-    [[nodiscard]] bool is_automatic() const;
-    [[nodiscard]] bool is_no_clear() const;
-    [[nodiscard]] bool is_request_exit() const;
-    [[nodiscard]] float get_automatic_rate() const;
-    [[nodiscard]] EMode get_runAs() const;
+    explicit CmdClear();
 
 private:
-    bool m_verbose              { false };
-    bool m_automatic            { false };
-    bool m_no_clear             { false };
-    
-    float m_automatic_rate      { 10.f  };
-
-    bool m_requestExit          { false };
-
-    EMode m_runAs               { EMode::Generator };
+    void execute(class Interpreter& interpreter, std::vector<std::string>& args) const override;
 };

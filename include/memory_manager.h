@@ -66,13 +66,12 @@ public:
     void createSharedMemory();
     void openSharedMemory();
 
-    ECatastrophes getActiveCastastrophe() const noexcept;
-    bool hasAnyCastastrophe() const noexcept;
-
     void pushCastastrophe(ECatastrophes catastrophe);
     void pullCastastrophe() noexcept;
 
-    std::string getCastastropheName(ECatastrophes catastrophe) const;
+    [[nodiscard]] ECatastrophes getActiveCastastrophe() const noexcept;
+    [[nodiscard]] bool hasAnyCastastrophe() const noexcept;
+    [[nodiscard]] std::string getCastastropheName(ECatastrophes catastrophe) const;
 
 private:
     std::stack<ECatastrophes> m_activeCastastrophes;

@@ -34,6 +34,8 @@ Options::Options(int argc, char** argv)
     ("help,h",                         "produce help message")
     ("verbose,v",                      "print to stdout all kind of operations")
     
+    ("no-clear",                       "Run the program without clear the screen")
+
     ("automatic,a",                    "generate automatic catastrophes")    
     ("automatic-rate,r", po::value<float>(&m_automatic_rate)->default_value(10.0f)
     , "seconds rate to generate automatic catastrophes")
@@ -63,6 +65,11 @@ Options::Options(int argc, char** argv)
         m_automatic = true;
     }
 
+    if(vm.count("no-clear"))
+    {
+        m_no_clear = true;
+    }
+
     if (vm.count("automatic-rate")) 
     {
         m_automatic_rate = vm["automatic-rate"].as<float>();
@@ -87,29 +94,21 @@ bool Options::is_automatic() const
 {
     return m_automatic;
 }
-float Options::get_automatic_rate() const
+bool Options::is_no_clear() const
 {
-    return m_automatic_rate;
+    return m_no_clear;
 }
-
 bool Options::is_request_exit() const
 {
     return m_requestExit;
 }
 
+float Options::get_automatic_rate() const
+{
+    return m_automatic_rate;
+}
+
 EMode Options::get_runAs() const
 {
     return m_runAs;
-}
-
-void Options::print_status() const 
-{
-    auto BoolToString = [](bool b) constexpr {
-        return b ? "True" : "False";
-    };
-
-    std::cout << "Program initialized with next parameters:\n";
-    std::cout << "Verbose?       : " << BoolToString(is_verbose())   << "\n";
-    std::cout << "Automatic?     : " << BoolToString(is_automatic()) << "\n";
-    std::cout << "Automatic Rate : " << get_automatic_rate()         << "\n";
 }

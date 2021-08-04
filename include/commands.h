@@ -26,3 +26,4 @@
 #include "commands/status.h"
 #include "commands/help.h"
 #include "commands/options.h"
+#include "commands/clear.h"

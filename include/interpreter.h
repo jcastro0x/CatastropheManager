@@ -36,9 +36,9 @@ public:
     template<typename... Args>
     void print(const char* format, Args... args) const;
 
-    const std::vector<std::unique_ptr<Command>>& getCommands() const;
-    const MemoryManager& getMemoryManager() const;
-    const Options& getOptions() const;
+    [[nodiscard]] const std::vector<std::unique_ptr<Command>>& getCommands() const;
+    [[nodiscard]] const MemoryManager& getMemoryManager() const;
+    [[nodiscard]] const Options& getOptions() const;
 
 private:
     std::vector<std::unique_ptr<Command>>   m_commands      {       };

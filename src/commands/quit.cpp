@@ -22,7 +22,7 @@
 #include <interpreter.h>
 
 CmdQuit::CmdQuit()
-: Command({"quit", "q"}, "Close the program")
+: Command({"quit", "exit", "q"}, "Close the program")
 {
 }
 
