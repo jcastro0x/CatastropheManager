@@ -9,7 +9,7 @@
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 
-#ifdef NDEBUG
+#ifndef NDEBUG
 #include <iostream>
 #endif
 
