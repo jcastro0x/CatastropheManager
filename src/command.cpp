@@ -1,4 +1,4 @@
-#include "command.h"
+#include <command.h>
 #include <stdexcept>
 
 #include <boost/algorithm/string.hpp>

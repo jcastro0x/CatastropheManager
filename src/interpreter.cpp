@@ -1,5 +1,5 @@
 #include "interpreter.h"
-#include "command.h"
+#include <command.h>
 
 #include <iostream>
 #include <algorithm>

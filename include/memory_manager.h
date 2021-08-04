@@ -23,7 +23,8 @@ enum class ECatastrophes : std::uint8_t
     Flood,          // God breaks his promise and try to drown us again
     WorldWar,       // Some day has to happen
     AlienAttack,    // Anunakis, Reptilians and all other terrorific aliens attack us
-    Godzilla,        // Why not?
+    Godzilla,       // Why not?
+    Gantz,          // Black sphere
 
     COUNT
 };
@@ -65,7 +66,8 @@ private:
         "Flood",
         "WorldWar",
         "AlienAttack",
-        "Godzilla"   
+        "Godzilla",
+        "Gantz"
     };
 
 };

@@ -3,29 +3,31 @@
 header powered by PlantUML
 title Catastrophe Manager
 
-enum ECatastrophes
-interface Command
-
 Command  <|-- Generate
 Command  <|-- Solve
 Command  <|-- Status
 Command  <|-- Quit
 
-Interpreter  <|-- Generator
-Interpreter  <|-- Solver
-Interpreter  *-- Options
+Options +- EMode
 
+Interpreter *-- Options
 Interpreter *-- Command
 Interpreter *-- MemoryManager
-
 Interpreter <|. main
+
 MemoryManager +-- Boost::Interprocess
-MemoryManager +-- ECatastrophes
+MemoryManager +- ECatastrophes
+MemoryManager .. Command
 
 
 class Interpreter {
     run()
+    getMemoryManager() : MemoryManager
     commands : vector<Command>
+}
+
+interface Command {
+    run(Interpreter, args)
 }
 
 class MemoryManager {
@@ -40,6 +42,24 @@ class Options {
     verbose : bool
     automatic : bool
     automatic-rate : float
+    runAs : EMode
+}
+
+enum EMode {
+    Generator
+    Solver
+}
+
+enum ECatastrophes {
+    None
+    Storm
+    Earthquake
+    Volcano
+    Flood
+    WorldWar
+    AlienAttack
+    Godzilla
+    Gantz 
 }
 
 @enduml

@@ -11,7 +11,7 @@ mkdir $BUILD_DIR
 
 INCLUDE_DIR="-Iinclude"
 LIBS="-lboost_date_time -lboost_program_options -lrt -lpthread"
-COMMON_FILES="src/interpreter.cpp src/command.cpp include/memory_manager.cpp include/options.cpp"
+COMMON_FILES="src/interpreter.cpp src/command.cpp src/memory_manager.cpp src/options.cpp"
 
 
 # Build Generator
