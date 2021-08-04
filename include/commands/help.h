@@ -26,7 +26,13 @@ class CmdHelp final : public Command
 {
 public:    
     explicit CmdHelp();
+    std::string generateHelp() const override;
     
 private:
     void execute(class Interpreter& interpreter, ArgsVector args) const override;
+
+    std::pair<bool, class Command*> findCommand(std::string InName, class Interpreter& interpreter) const;
+    
+    void printCommandInfo(Command* command) const;
+    void printFullCommandInfo(Command* command) const;
 };

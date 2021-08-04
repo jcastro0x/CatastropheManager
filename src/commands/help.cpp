@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 CmdHelp::CmdHelp()
 : Command({"help", "h", "?"}, "Print available commands")
@@ -31,16 +32,92 @@ CmdHelp::CmdHelp()
 
 void CmdHelp::execute(Interpreter& interpreter, ArgsVector args) const
 {
-    for(const auto& cmd : interpreter.getCommands())
+    // print all commands
+    if(args.size() == 0)
     {
-        constexpr std::size_t width { 70 };
-        const auto& name        = cmd->getName();
-        const auto& description = cmd->getDescription();
-        
-        std::cout   << "[\033[31m" << name << "\033[0m]"
-                    << std::setw(std::min<size_t>(width, width-name.size())) << std::setfill('.')
-                    << description
-                    << "\n";
+        for(const auto& cmd : interpreter.getCommands())
+        {
+            printCommandInfo(cmd.get());
+        }
     }
+    // print help about specific command
+    else
+    {
+        auto[success, cmd] = findCommand(args[0], interpreter);
+        if(success)
+        {
+            printFullCommandInfo(cmd);
+        }
+    }
+
     std::cout << std::flush;
 }
+
+std::pair<bool,Command*> CmdHelp::findCommand(std::string InName, Interpreter& interpreter) const
+{
+    std::transform(InName.begin(), InName.end(), InName.begin(), std::towlower);
+    for(const auto& cmd : interpreter.getCommands())
+    {
+        auto names        = cmd->getNames();
+        for(size_t i = 0; i < names.size(); i++)
+        {
+            std::transform(names[i].begin(), names[i].end(), names[i].begin(), std::towlower);
+            if(names[i] == InName) 
+            {
+                return std::make_pair<bool,Command*>(true, cmd.get());
+            }
+        }
+    }
+    return std::make_pair<bool,Command*>(false, nullptr);
+}
+
+void CmdHelp::printCommandInfo(Command* command) const
+{
+    constexpr std::size_t width { 70 };
+
+    const auto& name        = command->getName();
+    const auto& description = command->getDescription();
+    
+    std::cout   << "[\033[31m" << name << "\033[0m]"
+                << std::setw(std::min<size_t>(width, width-name.size())) << std::setfill('.')
+                << description
+                << std::endl;
+}
+
+void CmdHelp::printFullCommandInfo(Command* command) const
+{
+    const auto& name        = command->getName();
+    const auto& description = command->getDescription();
+    auto help               = command->generateHelp();
+    
+    std::cout << "[\033[31m" << name << "\033[0m] "
+              << "( ";
+    const auto& names = command->getNames();
+    for(size_t i = 0; i < names.size(); i++)
+    {
+        std::cout << names[i] << " ";
+    }
+    std::cout << ")\n";
+
+    std::cout << description << "\n\n";
+
+    std::cout << "[\033[32mHow to Use\033[0m]";
+    std::cout << help << "\n" << std::endl;
+}
+
+std::string CmdHelp::generateHelp() const {
+    return R"(
+If this program is executed without params, print all available commands with
+minor information (first name and short description).
+
+If is called with one parameter, this will be threated as command name, printing
+a more extensive information like name, aliases, description and, if has, a how-to-use.
+
+The name can be the long name or any of its alias.
+
+Example:
+help ?
+? ?
+h ?
+    )"; 
+};

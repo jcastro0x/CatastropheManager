@@ -33,7 +33,10 @@ public:
     
     [[nodiscard]] bool check(class Interpreter& interpreter, const std::string& input) const;
     [[nodiscard]] const std::string& getName() const;
+    [[nodiscard]] const std::vector<std::string>& getNames() const;
     [[nodiscard]] const std::string& getDescription() const;
+
+    virtual std::string generateHelp() const { return "N/A"; };
 
 protected:
     virtual void execute(class Interpreter& interpreter, ArgsVector args) const = 0;

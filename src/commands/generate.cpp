@@ -41,7 +41,7 @@ void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
     auto& mm = interpreter.getMemoryManager();
 
     std::string catastropheName;
-    for(int i = 0; i < args.size(); i++)
+    for(size_t i = 0; i < args.size(); i++)
     {
         catastropheName = args[i];
         std::transform(catastropheName.begin(), catastropheName.end(), catastropheName.begin(), std::towlower);
@@ -61,3 +61,16 @@ void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
 
     std::cout << std::flush;
 }
+
+std::string CmdGenerate::generateHelp() const {
+    return R"(
+Need at leat one param.
+The program iterate over all params and treat them as names of possible castastrophes.
+For each catastrophe, 'generate' push them into shared memory.
+
+The params are case insentive.
+
+Example:
+generate gantz storm volcano
+    )"; 
+};

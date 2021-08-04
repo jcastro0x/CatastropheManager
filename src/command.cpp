@@ -49,6 +49,11 @@ const std::string& Command::getName() const
     return m_names[0];
 }
 
+const std::vector<std::string>& Command::getNames() const
+{
+    return m_names;
+}
+
 const std::string& Command::getDescription() const 
 {
     return m_description;
