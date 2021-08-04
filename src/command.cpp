@@ -3,11 +3,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-Command::Command(const std::string& name, CmdCallback callback)
-: Command({name}, "", callback)
-{
-}
-
 Command::Command(const std::vector<std::string>& names, const std::string& description, CmdCallback callback)
 : m_names(names), m_description(description), m_callback(callback)
 {

@@ -4,18 +4,24 @@
 #include <iostream>
 #include <algorithm>
 
-Interpreter::Interpreter(const std::vector<Command>& commands)
-: m_commands(commands)
+Interpreter::Interpreter(int argc, char** argv)
+: m_options(argc, argv)
 {
-    std::vector<Command> innerCommands = {
+    // std::vector<Command> innerCommands = {
+    //     Command({"q", "quit"}, "Close the program", [](auto& interpreter, auto& args){
+    //         interpreter.request_exit();
+    //     })
+    // };
+    // m_commands.insert(m_commands.begin(), innerCommands.begin(), innerCommands.end());
 
-        Command({"q", "quit"}, "Close the program", [](auto& interpreter, auto& args){
-            interpreter.request_exit();
-        })
-        
-    };
-
-    m_commands.insert(m_commands.begin(), innerCommands.begin(), innerCommands.end());
+    if(m_options.get_runAs() == EMode::Generator)
+    {
+        std::cout << "Run As Generator\n";
+    }
+    else
+    {
+        std::cout << "Run As Solver\n";
+    }
 }
 
 void Interpreter::run()
@@ -26,8 +32,6 @@ void Interpreter::run()
     while(m_bRunning && std::getline(std::cin, line))
     {
         std::transform(line.begin(), line.end(), line.begin(), std::towlower);
-        std::cout << "Input: " << line << "\n";
-
         for(auto& cmd : m_commands)
         {
             if(cmd.execute(*this, line)) break;
