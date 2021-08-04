@@ -28,6 +28,7 @@ class Command
 {
 public:
     explicit Command(const std::vector<std::string>& names, const std::string& description);
+    
     [[nodiscard]] bool check(class Interpreter& interpreter, const std::string& input) const;
     [[nodiscard]] const std::string& getName() const;
     [[nodiscard]] const std::string& getDescription() const;

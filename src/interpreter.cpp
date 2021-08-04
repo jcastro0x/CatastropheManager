@@ -61,9 +61,16 @@ void Interpreter::run()
 {
     std::string line;
     bool bLastCommandExecuted = false;
-    while(m_bRunning && std::getline(std::cin, line))
+    while(m_bRunning)
     {
         bLastCommandExecuted = false;
+
+        // Print prompt
+        if(m_bRunning){
+            std::cout << "$: ";
+        }
+
+        std::getline(std::cin, line);
         std::transform(line.begin(), line.end(), line.begin(), std::towlower);
         
         for(auto& cmd : m_commands)
@@ -77,11 +84,6 @@ void Interpreter::run()
 
         if(!bLastCommandExecuted){
             std::cerr << "\033[31mCommand [" << line << "] not found\033[0m\n";
-        }
-
-        // Print prompt
-        if(m_bRunning){
-            std::cout << "$: ";
         }
     }
 }
