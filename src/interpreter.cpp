@@ -53,6 +53,8 @@ Interpreter::Interpreter(int argc, char** argv)
     {
         std::cout << solver_title << std::endl;
         m_commands.emplace_back(std::make_unique<CmdSolve>());
+
+        getMemoryManager().openSharedMemory();
     }
 
     std::cout << "\033[32mWrite 'help' to print help\033[0m\n";

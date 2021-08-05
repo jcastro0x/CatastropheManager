@@ -67,6 +67,7 @@ public:
 
     void createSharedMemory();
     void openSharedMemory();
+    void destroySharedMemory();
 
     void pushCastastrophe(ECatastrophes catastrophe);
     void pullCastastrophe() noexcept;
@@ -86,6 +87,10 @@ public:
 private:
     std::stack<ECatastrophes> m_activeCastastrophes;
     std::unique_ptr<boost::interprocess::managed_shared_memory> m_segment;
+
+    // Used to store pointer to shared memory, instead to
+    // search each time we need it
+    CatastrophesVector* m_CatastrophesVector = nullptr;
 
     inline static const char* CastastrophesNames[] = {
         "None",

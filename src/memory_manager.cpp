@@ -46,22 +46,27 @@ void MemoryManager::createSharedMemory()
     m_segment
     ->construct<CatastrophesVector>(Vector_UUID)(m_segment->get_segment_manager());
 
+    //TODO: Maybe rename to storeSharedMemoryPointer?
+    openSharedMemory();
 }
 
 void MemoryManager::openSharedMemory()
 {
-    m_segment = std::make_unique<managed_shared_memory>(open_only, SharedMemory_UUID);
-    CatastrophesVector* vector = m_segment->find<CatastrophesVector>(Vector_UUID).first;
-
-    std::sort(vector->rbegin(), vector->rend());
-
-    std::cout << "Reading 100 elements\n";
-    for(int i = 0; i < 100; i++)
+    if(!m_segment)
     {
-        std::cout << getCastastropheName((*vector)[i]) << "\n";
+        m_segment = std::make_unique<managed_shared_memory>(open_only, SharedMemory_UUID);
     }
 
+    if(!m_CatastrophesVector)
+    {
+        m_CatastrophesVector = m_segment->find<CatastrophesVector>(Vector_UUID).first;
+    }
+}
+
+void MemoryManager::destroySharedMemory()
+{
     m_segment->destroy<CatastrophesVector>(Vector_UUID);
+    m_CatastrophesVector = nullptr;
 }
 
 ECatastrophes MemoryManager::getActiveCastastrophe() const noexcept
@@ -102,13 +107,14 @@ void MemoryManager::pullCastastrophe() noexcept
 
 const MemoryManager::CatastrophesVector* MemoryManager::getCatastrophesVector() const
 {
-    auto vector = m_segment->find<CatastrophesVector>(Vector_UUID).first;
-    if(vector == nullptr)
+    if(!m_CatastrophesVector)
     {
-        throw std::runtime_error("Can't find shared memory");
+        throw std::runtime_error("CatastrophesVector uninitilialized");
     }
-
-    return vector;
+    else
+    {
+        return m_CatastrophesVector;
+    }
 }
 
 MemoryManager::CatastrophesVector* MemoryManager::getCatastrophesVector()
