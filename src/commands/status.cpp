@@ -19,6 +19,10 @@
 // SOFTWARE.
 
 #include <commands/status.h>
+#include <interpreter.h>
+#include <memory_manager.h>
+
+#include <iostream>
 
 CmdStatus::CmdStatus()
 : Command({"status", "ss"}, "Check active catastrophes into shared memory")
@@ -27,4 +31,13 @@ CmdStatus::CmdStatus()
 
 void CmdStatus::execute(Interpreter& interpreter, ArgsVector args) const
 {
+    const auto& mm = interpreter.getMemoryManager();
+    const auto vec = mm.getCatastrophesVector();
+
+    std::cout << "\033[33mActive catastrophes:\033[0m\n";
+    for(const auto& catastrophe : *vec)
+    {
+        std::cout << mm.getCastastropheName(catastrophe) << "\n";
+    }
+    std::cout << std::flush;
 }

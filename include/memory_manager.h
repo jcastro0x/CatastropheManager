@@ -59,16 +59,29 @@ public:
     explicit MemoryManager();
     ~MemoryManager();
 
+    MemoryManager(const MemoryManager&)            = delete;
+    MemoryManager(MemoryManager&&)                 = delete;
+    MemoryManager& operator=(const MemoryManager&) = delete;
+    MemoryManager& operator=(MemoryManager&&)      = delete;
+    
+
     void createSharedMemory();
     void openSharedMemory();
 
     void pushCastastrophe(ECatastrophes catastrophe);
     void pullCastastrophe() noexcept;
 
+    const CatastrophesVector* getCatastrophesVector() const;
+
+private:
+    CatastrophesVector* getCatastrophesVector();
+
+public:
     [[nodiscard]] ECatastrophes getActiveCastastrophe() const noexcept;
     [[nodiscard]] bool hasAnyCastastrophe() const noexcept;
     [[nodiscard]] std::string getCastastropheName(ECatastrophes catastrophe) const;
     [[nodiscard]] ECatastrophes getCastastrophe(std::string_view name) const;
+
 
 private:
     std::stack<ECatastrophes> m_activeCastastrophes;

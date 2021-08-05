@@ -53,7 +53,8 @@ void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
     for(size_t i = 0; i < args.size(); i++)
     {
         catastropheName = args[i];
-        std::transform(catastropheName.begin(), catastropheName.end(), catastropheName.begin(), std::towlower);
+        std::transform(catastropheName.begin(), catastropheName.end(), 
+                       catastropheName.begin(), std::towlower);
         catastropheName[0] -= 32; //toupper first character
 
         ECatastrophes catastrophe = mm.getCastastrophe(catastropheName);

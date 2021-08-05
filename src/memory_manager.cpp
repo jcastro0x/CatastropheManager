@@ -37,18 +37,15 @@ MemoryManager::~MemoryManager()
 void MemoryManager::createSharedMemory()
 {
     // Remove possibly old created shared memory
-    shared_memory_object::remove(SharedMemory_UUID);
+    shared_memory_object::remove(SharedMemory_UUID); //TODO: Move this to ctor?
 
-    m_segment = std::make_unique<managed_shared_memory>(create_only, SharedMemory_UUID, MemoryAllocated);
+    m_segment = std::make_unique<managed_shared_memory>(
+        create_only, SharedMemory_UUID, MemoryAllocated
+    );
 
-    Allocator alloc_inst(m_segment->get_segment_manager());
-    CatastrophesVector* vector = m_segment->construct<CatastrophesVector>(Vector_UUID)(alloc_inst);
+    m_segment
+    ->construct<CatastrophesVector>(Vector_UUID)(m_segment->get_segment_manager());
 
-    std::cout << "Writing 100 elements\n";
-    for(int i = 0; i < 100; i++)
-    {
-        vector->push_back(ECatastrophes::None);
-    }
 }
 
 void MemoryManager::openSharedMemory()
@@ -69,6 +66,12 @@ void MemoryManager::openSharedMemory()
 
 ECatastrophes MemoryManager::getActiveCastastrophe() const noexcept
 {
+    const auto vector = getCatastrophesVector();
+    if(vector->size() != 0)
+    {
+        return (*vector)[0];
+    }
+
     return ECatastrophes::None;
 }
 
@@ -79,12 +82,39 @@ bool MemoryManager::hasAnyCastastrophe() const noexcept
 
 void MemoryManager::pushCastastrophe(const ECatastrophes catastrophe) 
 {
-    std::cout << "Pushing " << getCastastropheName(catastrophe) << std::endl;
+    try
+    {
+        std::cout << "Pushing " << getCastastropheName(catastrophe) << std::endl;
+        auto vector = getCatastrophesVector();
+        vector->emplace_back(catastrophe);    
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "Can't push" << getCastastropheName(catastrophe) << std::endl;
+        std::cerr << e.what() << '\n';
+    }
 }
 
 void MemoryManager::pullCastastrophe() noexcept
 {
 
+}
+
+const MemoryManager::CatastrophesVector* MemoryManager::getCatastrophesVector() const
+{
+    auto vector = m_segment->find<CatastrophesVector>(Vector_UUID).first;
+    if(vector == nullptr)
+    {
+        throw std::runtime_error("Can't find shared memory");
+    }
+
+    return vector;
+}
+
+MemoryManager::CatastrophesVector* MemoryManager::getCatastrophesVector()
+{
+    const auto v = const_cast<const MemoryManager*>(this)->getCatastrophesVector();
+    return const_cast<CatastrophesVector*>(v);
 }
 
 std::string MemoryManager::getCastastropheName(ECatastrophes catastrophe) const
