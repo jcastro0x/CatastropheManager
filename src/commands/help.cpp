@@ -26,7 +26,20 @@
 #include <algorithm>
 
 CmdHelp::CmdHelp()
-: Command({"help", "h", "?"}, "Print available commands")
+: Command({"help", "h", "?"}, "Print available commands", R"(
+If this program is executed without params, print all available commands with
+minor information (first name and short description).
+
+If is called with one parameter, this will be threated as command name, printing
+a more extensive information like name, aliases, description and, if has, a how-to-use.
+
+The name can be the long name or any of its alias.
+
+Example:
+help ?
+? ?
+h ?
+    )")
 {
 }
 
@@ -88,7 +101,7 @@ void CmdHelp::printFullCommandInfo(Command* command) const
 {
     const auto& name        = command->getName();
     const auto& description = command->getDescription();
-    auto help               = command->generateHelp();
+    const auto& howtouse    = command->getHowToUse();
     
     std::cout << "[\033[31m" << name << "\033[0m] "
               << "( ";
@@ -102,22 +115,5 @@ void CmdHelp::printFullCommandInfo(Command* command) const
     std::cout << description << "\n\n";
 
     std::cout << "[\033[32mHow to Use\033[0m]";
-    std::cout << help << "\n" << std::endl;
+    std::cout << howtouse << "\n" << std::endl;
 }
-
-std::string CmdHelp::generateHelp() const {
-    return R"(
-If this program is executed without params, print all available commands with
-minor information (first name and short description).
-
-If is called with one parameter, this will be threated as command name, printing
-a more extensive information like name, aliases, description and, if has, a how-to-use.
-
-The name can be the long name or any of its alias.
-
-Example:
-help ?
-? ?
-h ?
-    )"; 
-};

@@ -26,7 +26,16 @@
 #include <iostream>
 
 CmdGenerate::CmdGenerate()
-: Command({"generate", "g"}, "Push a new catastrophe into shared memory")
+: Command({"generate", "g"}, "Push a new catastrophe into shared memory", R"(
+Need at leat one param.
+The program iterate over all params and treat them as names of possible castastrophes.
+For each catastrophe, 'generate' push them into shared memory.
+
+The params are case insentive.
+
+Example:
+generate gantz storm volcano
+    )")
 {
 }
 
@@ -61,16 +70,3 @@ void CmdGenerate::execute(Interpreter& interpreter, ArgsVector args) const
 
     std::cout << std::flush;
 }
-
-std::string CmdGenerate::generateHelp() const {
-    return R"(
-Need at leat one param.
-The program iterate over all params and treat them as names of possible castastrophes.
-For each catastrophe, 'generate' push them into shared memory.
-
-The params are case insentive.
-
-Example:
-generate gantz storm volcano
-    )"; 
-};

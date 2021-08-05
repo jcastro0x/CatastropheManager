@@ -26,7 +26,6 @@ class CmdHelp final : public Command
 {
 public:    
     explicit CmdHelp();
-    std::string generateHelp() const override;
     
 private:
     void execute(class Interpreter& interpreter, ArgsVector args) const override;

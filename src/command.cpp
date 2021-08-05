@@ -24,7 +24,12 @@
 #include <boost/algorithm/string.hpp>
 
 Command::Command(ArgsVector names, const std::string& description)
-: m_names(names), m_description(description)
+: Command(names, description, "\nN/A")
+{
+}
+
+Command::Command(const ArgsVector names, const std::string& description, const std::string& howtouse)
+: m_names(names), m_description(description), m_how_to_use(howtouse)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
 }
@@ -57,6 +62,11 @@ const std::vector<std::string>& Command::getNames() const
 const std::string& Command::getDescription() const 
 {
     return m_description;
+}
+
+const std::string& Command::getHowToUse() const
+{
+    return m_how_to_use;
 }
 
 std::vector<std::string> Command::split(const std::string& input) const
