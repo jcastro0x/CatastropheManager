@@ -20,14 +20,18 @@
 
 #include <interpreter.h>
 #include <commands.h>
+#include <log.h>
 
 #include <iostream>
 #include <algorithm>
 
+#include <boost/format.hpp>
+#include <thread>
+
 Interpreter::Interpreter(int argc, char** argv)
-: m_options(argc, argv)
+: m_options(std::make_shared<Options>(argc, argv))
 {
-    m_bRunning = !m_options.is_request_exit();
+    m_bRunning = !m_options->is_request_exit();
     if(!m_bRunning) return;
 
     m_commands.emplace_back(std::make_unique<CmdQuit>());
@@ -37,31 +41,35 @@ Interpreter::Interpreter(int argc, char** argv)
     m_commands.emplace_back(std::make_unique<CmdClear>());
     m_commands.emplace_back(std::make_unique<CmdCatastrophesList>());
 
-    if(!m_options.is_no_clear())
+    Log::initialize(m_options);
+
+    if(!m_options->is_no_clear())
     {
-        std::cout << "\033[2J"; // clear screen
+        Log::cls();
     }
 
-    if(m_options.get_runAs() == EMode::Generator)
+    if(m_options->get_runAs() == EMode::Generator)
     {
-        std::cout << generator_title << std::endl;
+        Log::print(generator_title);
         m_commands.emplace_back(std::make_unique<CmdGenerate>());
         
         getMemoryManager().createSharedMemory();
     }
     else
     {
-        std::cout << solver_title << std::endl;
+        Log::print(solver_title);
         m_commands.emplace_back(std::make_unique<CmdSolve>());
 
         getMemoryManager().openSharedMemory();
     }
 
-    std::cout << "\033[32mWrite 'help' to print help\033[0m\n";
+    Log::print("\033[32mWrite 'help' to print help\033[0m");
 }
 
 void Interpreter::run()
 {
+    std::thread tupdate(std::bind(&Interpreter::update, this));
+
     std::string line;
     bool bLastCommandExecuted = false;
     while(m_bRunning)
@@ -89,25 +97,28 @@ void Interpreter::run()
             std::cerr << "\033[31mCommand [" << line << "] not found\033[0m\n";
         }
     }
+
+    // Wait to finish update thread
+    tupdate.join();
 }
 
 void Interpreter::request_exit()
 {
-    std::cout << "Exit requested\n";
+    Log::log("Exit requested");
     m_bRunning = false;
 }
 
-const std::vector<std::unique_ptr<Command>>& Interpreter::getCommands() const
+const std::vector<std::unique_ptr<Command>>& Interpreter::getCommands() const noexcept
 {
     return m_commands;
 }
 
-const MemoryManager& Interpreter::getMemoryManager() const
+const MemoryManager& Interpreter::getMemoryManager() const noexcept
 {
     return m_memoryManager;
 }
 
-MemoryManager& Interpreter::getMemoryManager()
+MemoryManager& Interpreter::getMemoryManager() noexcept
 {
     const auto& mm = const_cast<const Interpreter*>(this)->getMemoryManager();
     return const_cast<MemoryManager&>(mm);
@@ -115,5 +126,19 @@ MemoryManager& Interpreter::getMemoryManager()
 
 const Options& Interpreter::getOptions() const
 {
-    return m_options;
+    if(!m_options) throw std::runtime_error("getOptions called with invalid m_options class variable");
+    return *m_options;
+}
+
+void Interpreter::update()
+{
+    using namespace std::chrono_literals;
+    while(m_bRunning)
+    {
+        std::this_thread::sleep_for(500ms); //we don't want to drain all CPU!!
+
+        //log((boost::format("first: %1%, second: %2%\n") % 10 % 22).str().c_str());
+        //war((boost::format("first: %1%, second: %2%\n") % 33 % 44).str().c_str());
+        //err((boost::format("first: %1%, second: %2%\n") % 55 % 66).str().c_str());
+    }
 }

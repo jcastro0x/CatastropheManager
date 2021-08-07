@@ -20,7 +20,9 @@
 
 #include <commands/catastrophes_list.h>
 #include <interpreter.h>
+#include <log.h>
 
+#include <boost/format.hpp>
 #include <iostream>
 
 CmdCatastrophesList::CmdCatastrophesList()
@@ -34,8 +36,8 @@ void CmdCatastrophesList::execute(Interpreter& interpreter, ArgsVector args) con
 
     for(int i = 0; i < static_cast<int>(ECatastrophes::COUNT); i++)
     {
-        std::cout << "[" << (i+1) << "] " 
-        << mm.getCastastropheName(static_cast<ECatastrophes>(i)) << "\n";
+        const auto name = mm.getCastastropheName(static_cast<ECatastrophes>(i));
+        Log::print( (boost::format("[%1%] %2%") % (i+1) % name).str().c_str() );
     }
-    std::cout << std::flush;
+    Log::flush();
 }

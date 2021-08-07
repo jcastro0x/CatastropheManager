@@ -19,6 +19,8 @@
 // SOFTWARE.
 
 #include <memory_manager.h>
+#include <log.h>
+#include <boost/format.hpp>
 
 #include <iostream>
 #include <vector>
@@ -89,7 +91,7 @@ void MemoryManager::pushCastastrophe(const ECatastrophes catastrophe)
 {
     try
     {
-        std::cout << "Pushing " << getCastastropheName(catastrophe) << std::endl;
+        Log::log( (boost::format("Pushing %1%") % getCastastropheName(catastrophe)).str().c_str() );
         auto vector = getCatastrophesVector();
         vector->emplace_back(catastrophe);    
     }
@@ -146,8 +148,3 @@ ECatastrophes MemoryManager::getCastastrophe(std::string_view name) const
 
     return ECatastrophes::None;
 }
-
-
-
-
-

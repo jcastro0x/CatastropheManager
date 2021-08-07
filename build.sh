@@ -8,7 +8,7 @@ if [ -d $BUILD_DIR ]; then
 fi
 mkdir $BUILD_DIR
 
-CC="g++ --std=c++17 -Wall -pedantic"
+CC="g++ -std=c++17 -Wall -pedantic"
 INCLUDE_DIR="-Iinclude"
 LIBS="-lboost_date_time -lboost_program_options -lrt -lpthread"
 COMMON_FILES="src/interpreter.cpp src/memory_manager.cpp src/options.cpp"

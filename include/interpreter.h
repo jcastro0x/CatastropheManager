@@ -28,25 +28,29 @@
 
 class Interpreter final
 {
+
 public:
     explicit Interpreter(int argc, char** argv);
     void run();
     void request_exit();
 
-    template<typename... Args>
-    void print(const char* format, Args... args) const;
-
-    [[nodiscard]] const std::vector<std::unique_ptr<Command>>& getCommands() const;
-    [[nodiscard]] const MemoryManager& getMemoryManager() const;
-    [[nodiscard]] MemoryManager& getMemoryManager();
+public:
+    [[nodiscard]] const std::vector<std::unique_ptr<Command>>& getCommands() const noexcept;
+    [[nodiscard]] const MemoryManager& getMemoryManager() const noexcept;
+    [[nodiscard]] MemoryManager& getMemoryManager() noexcept;
     [[nodiscard]] const Options& getOptions() const;
+
+private:
+    void update();
+
+
 
 private:
     std::vector<std::unique_ptr<Command>>   m_commands      {       };
     MemoryManager                           m_memoryManager {       };
-    Options                                 m_options       /* ctor*/;
-    bool                                    m_bRunning      { false };
-
+    std::shared_ptr<Options>                m_options       /* ctor*/;
+    
+    volatile bool                           m_bRunning      { false };
 
     inline static const char* generator_title = R"(
 run as:        

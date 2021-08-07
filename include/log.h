@@ -18,27 +18,60 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 // SOFTWARE.
 
-#include <commands/status.h>
-#include <interpreter.h>
-#include <memory_manager.h>
-#include <log.h>
+#pragma once
 
+#include <options.h>
+#include <memory>
 #include <iostream>
 
-CmdStatus::CmdStatus()
-: Command({"status", "ss"}, "Check active catastrophes into shared memory")
+struct Log
 {
-}
-
-void CmdStatus::execute(Interpreter& interpreter, ArgsVector args) const
-{
-    const auto& mm = interpreter.getMemoryManager();
-    const auto vec = mm.getCatastrophesVector();
-
-    Log::print("\033[33mActive catastrophes:\033[0m");
-    for(const auto& catastrophe : *vec)
+    static void initialize(std::shared_ptr<const Options> options) noexcept
     {
-        Log::print(mm.getCastastropheName(catastrophe).c_str());
+        m_options = options;
     }
-    Log::flush();
-}
+
+    static void cls() noexcept
+    {
+        std::cout << "\033[2J"; // clear screen
+    }
+
+    static void print(const char* format) noexcept
+    {
+        std::cout << format << '\n';
+    }
+
+    static void log(const char* format)
+    {
+        if(m_options->is_verbose())
+        {
+            std::cout << format << '\n';
+        }
+    }
+
+    static void war(const char* format)
+    {
+        if(m_options->is_verbose())
+        {
+            std::cout << "\033[33m";        // yellow
+            std::cout << format << '\n';
+            std::cout << "\033[0m";
+        }
+    }
+
+    static void err(const char* format) noexcept
+    {
+        // We want to print errors even if --verbose flag aren't set
+        std::cout << "\033[31m";        // red
+        std::cerr << format << '\n';
+        std::cout << "\033[0m";
+    }
+
+    static void flush() noexcept
+    {
+        std::cout << std::flush;
+    }
+
+private:
+    inline static std::shared_ptr<const Options> m_options { nullptr };
+};

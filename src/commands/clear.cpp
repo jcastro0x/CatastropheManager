@@ -20,6 +20,7 @@
 
 #include <commands/clear.h>
 #include <interpreter.h>
+#include <log.h>
 
 #include <iostream>
 
@@ -30,5 +31,5 @@ CmdClear::CmdClear()
 
 void CmdClear::execute(Interpreter& interpreter, ArgsVector args) const
 {
-    std::cout << "\033[2J"; // clear screen
+    Log::cls();
 }
