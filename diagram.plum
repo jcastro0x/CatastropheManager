@@ -3,11 +3,14 @@
 header powered by PlantUML
 title Catastrophe Manager
 
+Command  <|-- CatastropheList
+Command  <|-- Clear
 Command  <|-- Generate
+Command  <|-- Help
+Command  <|-- OptionsList
+Command  <|-- Quit
 Command  <|-- Solve
 Command  <|-- Status
-Command  <|-- Quit
-Command  <|-- Help
 
 Options +- EMode
 
@@ -28,7 +31,7 @@ class Interpreter {
     commands : vector<Command>
 }
 
-interface Command {
+abstract Command {
     check(Interpreter, input : string) : bool
     execute(Interpreter, args)
 }

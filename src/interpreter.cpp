@@ -26,7 +26,9 @@
 #include <algorithm>
 
 #include <boost/format.hpp>
+
 #include <thread>
+#include <mutex>
 
 Interpreter::Interpreter(int argc, char** argv)
 : m_options(std::make_shared<Options>(argc, argv))
@@ -137,6 +139,7 @@ void Interpreter::update()
     {
         std::this_thread::sleep_for(500ms); //we don't want to drain all CPU!!
 
+        //std::lock_guard<std::mutex> a;
         //log((boost::format("first: %1%, second: %2%\n") % 10 % 22).str().c_str());
         //war((boost::format("first: %1%, second: %2%\n") % 33 % 44).str().c_str());
         //err((boost::format("first: %1%, second: %2%\n") % 55 % 66).str().c_str());
