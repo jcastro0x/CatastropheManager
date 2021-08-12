@@ -1,0 +1,28 @@
+#
+# Makefile for Unix/Linux platforms
+# @jcastro0x
+
+APP			:= CatastropheManager
+CCGLAFS		:= -Wall -pedantic -std=c++17
+LIBS_DIR		:= /usr/local/lib
+CC				:= g++
+SOURCE_DIR	:= src
+OBJ_DIR		:= obj
+
+
+ALLCPPS		:= $(shell find $(SOURCE_DIR) -type f -iname *.cpp)
+SUBDIRS		:= $(shell find $(SOURCE_DIR) -type d)
+OBJSUBDIRS	:= $(patsubst $(SOURCE_DIR)%,$(OBJ_DIR)%,$(SUBDIRS))
+
+.PHONY: dir
+
+$(APP) : $(OBJSUBDIRS) $(SOURCE_DIR)/main.cpp 
+	$(CC) $(SOURCE_DIR)/main.cpp -c -o $(OBJ_DIR)/main.o -Iinclude $(CCGLAFS)
+
+dir :
+	$(info $(SUBDIRS))
+	$(info $(OBJSUBDIRS))
+	$(info $(ALLCPPS))
+
+$(OBJSUBDIRS) :
+	mkdir -p $(OBJSUBDIRS)

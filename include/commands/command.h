@@ -29,8 +29,10 @@ typedef const std::vector<std::string>& ArgsVector;
 class Command
 {
 public:
-    explicit Command(const ArgsVector names, const std::string& description);
-    explicit Command(const ArgsVector names, const std::string& description, const std::string& howtouse);
+    explicit Command(ArgsVector names, const std::string& description);
+    explicit Command(ArgsVector names, const std::string& description, const std::string& howtouse);
+
+    virtual ~Command() = default;
 
     [[nodiscard]] bool check(class Interpreter& interpreter, const std::string& input) const;
     [[nodiscard]] const std::string& getName() const;

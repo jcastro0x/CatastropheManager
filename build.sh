@@ -8,9 +8,9 @@ if [ -d $BUILD_DIR ]; then
 fi
 mkdir $BUILD_DIR
 
-CC="g++ -std=c++17 -Wall -pedantic"
+CC="g++ -std=c++17 -Wall -pedantic -L/usr/local/lib"
 INCLUDE_DIR="-Iinclude"
-LIBS="-lboost_date_time -lboost_program_options -lrt -lpthread"
+LIBS="-lboost_date_time -lboost_program_options -lpthread"
 COMMON_FILES="src/interpreter.cpp src/memory_manager.cpp src/options.cpp"
 COMMANDS_FILES="src/command.cpp src/commands/generate.cpp src/commands/quit.cpp src/commands/solve.cpp src/commands/status.cpp src/commands/help.cpp src/commands/options.cpp src/commands/clear.cpp src/commands/catastrophes_list.cpp"
 DEBUG="-DNDEBUG -O3"

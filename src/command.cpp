@@ -28,7 +28,7 @@ Command::Command(ArgsVector names, const std::string& description)
 {
 }
 
-Command::Command(const ArgsVector names, const std::string& description, const std::string& howtouse)
+Command::Command(ArgsVector names, const std::string& description, const std::string& howtouse)
 : m_names(names), m_description(description), m_how_to_use(howtouse)
 {
     if(m_names.size() == 0) throw std::runtime_error("Command with 0 names");
