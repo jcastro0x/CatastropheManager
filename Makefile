@@ -1,5 +1,5 @@
 APP			:= CatastropheManager
-CCGLAFS		:= -Wall -pedantic -std=c++17 -O3
+CCGLAFS		:= -Wall -pedantic -std=c++17
 LIBS_DIR	:= /usr/local/lib
 LIBS		:= -lboost_date_time -lboost_program_options -lpthread
 CC			:= g++

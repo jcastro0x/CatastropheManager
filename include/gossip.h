@@ -18,33 +18,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 // SOFTWARE.
 
-#include <commands/options.h>
-#include <options.h>
-#include <interpreter.h>
 
-#include <iostream>
+#pragma once
 
-CmdOptions::CmdOptions()
-: Command({"options", "o"}, "Print status options")
+#include <thread>
+#include <memory_manager.h>
+
+
+class Gossip final
 {
-}
+public:
+    explicit Gossip(const class Interpreter* interpreter);
+    ~Gossip();
+    
+    void run();
 
-void CmdOptions::execute(Interpreter& interpreter, ArgsVector args) const
-{
-    const auto& options = interpreter.getOptions();
+private:
+    void update();
 
-    auto BoolToString = [](bool b) constexpr {
-        return b ? "True" : "False";
-    };
 
-    auto ModeToString = [](EMode m) constexpr {
-        return m == EMode::Generator ? "Generator" : "Solver";
-    };
+private:
+    const class Interpreter* m_interpreter = nullptr;
+    std::thread thread_update;
 
-    std::cout << "Program initialized with next parameters:\n";
-    std::cout << "Verbose        : " << BoolToString(options.is_verbose())   << "\n";
-    std::cout << "Automatic      : " << BoolToString(options.is_automatic()) << "\n";
-    std::cout << "No-Clear       : " << BoolToString(options.is_no_clear())  << "\n";
-    std::cout << "Run As         : " << ModeToString(options.get_runAs())    << "\n";
-    std::cout << "Automatic Rate : " << options.get_automatic_rate()         << "\n";
-}
+    ECatastrophes m_lastDetectedCatastrophe = ECatastrophes::None;
+};

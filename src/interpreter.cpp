@@ -21,17 +21,19 @@
 #include <interpreter.h>
 #include <commands.h>
 #include <log.h>
+#include <options.h>
+#include <gossip.h>
 
 #include <iostream>
 #include <algorithm>
 
 #include <boost/format.hpp>
 
-#include <thread>
-#include <mutex>
+
 
 Interpreter::Interpreter(int argc, char** argv)
 : m_options(std::make_shared<Options>(argc, argv))
+, m_gossip(std::make_shared<Gossip>(this))
 {
     m_bRunning = !m_options->is_request_exit();
     if(!m_bRunning) return;
@@ -70,7 +72,7 @@ Interpreter::Interpreter(int argc, char** argv)
 
 void Interpreter::run()
 {
-    std::thread tupdate(std::bind(&Interpreter::update, this));
+    m_gossip->run();
 
     std::string line;
     bool bLastCommandExecuted = false;
@@ -101,7 +103,7 @@ void Interpreter::run()
     }
 
     // Wait to finish update thread
-    tupdate.join();
+    //tupdate.join();
 }
 
 void Interpreter::request_exit()
@@ -132,16 +134,7 @@ const Options& Interpreter::getOptions() const
     return *m_options;
 }
 
-void Interpreter::update()
+bool Interpreter::isRunning() const 
 {
-    using namespace std::chrono_literals;
-    while(m_bRunning)
-    {
-        std::this_thread::sleep_for(500ms); //we don't want to drain all CPU!!
-
-        //std::lock_guard<std::mutex> a;
-        //log((boost::format("first: %1%, second: %2%\n") % 10 % 22).str().c_str());
-        //war((boost::format("first: %1%, second: %2%\n") % 33 % 44).str().c_str());
-        //err((boost::format("first: %1%, second: %2%\n") % 55 % 66).str().c_str());
-    }
+    return m_bRunning;
 }

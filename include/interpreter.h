@@ -21,11 +21,13 @@
 #pragma once
 
 #include <commands/command.h>
-#include <options.h>
+
 #include <memory_manager.h>
 
 #include <memory>
 
+class Options;
+class Gossip;
 class Interpreter final
 {
 
@@ -40,8 +42,7 @@ public:
     [[nodiscard]] MemoryManager& getMemoryManager() noexcept;
     [[nodiscard]] const Options& getOptions() const;
 
-private:
-    void update();
+    [[nodiscard]] bool isRunning() const;
 
 
 
@@ -49,6 +50,7 @@ private:
     std::vector<std::unique_ptr<Command>>   m_commands      {       };
     MemoryManager                           m_memoryManager {       };
     std::shared_ptr<Options>                m_options       /* ctor*/;
+    std::shared_ptr<Gossip>                 m_gossip        /* ctor*/;
     
     volatile bool                           m_bRunning      { false };
 
@@ -57,7 +59,7 @@ run as:
 ___|                                 |                
 |       _ \  __ \    _ \   __|  _` |  __|   _ \    __| 
 |   |   __/  |   |   __/  |    (   |  |    (   |  |    
-\____| \___| _|  _| \___| _|   \__,_| \__| \___/  _|  
+\____| \___| _|  _| \___| _|   \__,_| \__| \___/ _|  
             ~catastrophe manager suite~          
     )";
 

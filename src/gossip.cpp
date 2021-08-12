@@ -18,33 +18,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 // SOFTWARE.
 
-#include <commands/options.h>
-#include <options.h>
+#include <gossip.h>
 #include <interpreter.h>
+#include <log.h>
+
+#include <chrono>
+#include <mutex>
 
 #include <iostream>
 
-CmdOptions::CmdOptions()
-: Command({"options", "o"}, "Print status options")
+
+Gossip::Gossip(const Interpreter* interpreter)
+: m_interpreter(interpreter)
 {
 }
 
-void CmdOptions::execute(Interpreter& interpreter, ArgsVector args) const
+Gossip::~Gossip()
 {
-    const auto& options = interpreter.getOptions();
+    thread_update.join();
+}
 
-    auto BoolToString = [](bool b) constexpr {
-        return b ? "True" : "False";
-    };
+void Gossip::run()
+{
+    thread_update = std::thread(std::bind(&Gossip::update, this));
+    Log::print("Gossip running...");
+}
 
-    auto ModeToString = [](EMode m) constexpr {
-        return m == EMode::Generator ? "Generator" : "Solver";
-    };
+void Gossip::update()
+{
+    using namespace std::chrono_literals;
+    while(m_interpreter->isRunning())
+    {
+        std::this_thread::sleep_for(500ms); //we don't want to drain all CPU!!
+        //std::lock_guard<std::mutex> a;
 
-    std::cout << "Program initialized with next parameters:\n";
-    std::cout << "Verbose        : " << BoolToString(options.is_verbose())   << "\n";
-    std::cout << "Automatic      : " << BoolToString(options.is_automatic()) << "\n";
-    std::cout << "No-Clear       : " << BoolToString(options.is_no_clear())  << "\n";
-    std::cout << "Run As         : " << ModeToString(options.get_runAs())    << "\n";
-    std::cout << "Automatic Rate : " << options.get_automatic_rate()         << "\n";
+        const auto& mm = m_interpreter->getMemoryManager();
+        ECatastrophes c = mm.getActiveCastastrophe();
+        if(c != ECatastrophes::None && c != m_lastDetectedCatastrophe)
+        {
+            m_lastDetectedCatastrophe = c;
+            Log::print("New castastrophe detected!");
+            Log::print(mm.getCastastropheName(c).c_str());
+        }
+    }
 }
